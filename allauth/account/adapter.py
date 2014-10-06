@@ -177,6 +177,7 @@ class DefaultAccountAdapter(object):
         signup form.
         """
         from .utils import user_username, user_email, user_field
+        from accounts.models import CBUserManager
 
         data = form.cleaned_data
         first_name = data.get('first_name')

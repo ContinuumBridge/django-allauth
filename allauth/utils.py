@@ -2,6 +2,8 @@ import re
 import unicodedata
 import json
 
+from django.apps import apps as django_apps
+from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.validators import validate_email, ValidationError
 from django.core import urlresolvers
@@ -107,26 +109,18 @@ def import_callable(path_or_callable):
         ret = path_or_callable
     return ret
 
-try:
-    from django.contrib.auth import get_user_model
-except ImportError:
-    # To keep compatibility with Django 1.4
-    def get_user_model():
-        from . import app_settings
-        from django.db.models import get_model
-
-        try:
-            app_label, model_name = app_settings.USER_MODEL.split('.')
-        except ValueError:
-            raise ImproperlyConfigured("AUTH_USER_MODEL must be of the"
-                                       " form 'app_label.model_name'")
-        user_model = get_model(app_label, model_name)
-        if user_model is None:
-            raise ImproperlyConfigured("AUTH_USER_MODEL refers to model"
-                                       " '%s' that has not been installed"
-                                       % app_settings.USER_MODEL)
-        return user_model
-
+def get_user_model():
+    """
+    Returns the User model that is active in this project.
+    """
+    try:
+        return django_apps.get_model(settings.USER_MODEL)
+    except ValueError:
+        raise ImproperlyConfigured("USER_MODEL must be of the form 'app_label.model_name'")
+    except LookupError:
+        raise ImproperlyConfigured(
+            "USER_MODEL refers to model '%s' that has not been installed" % settings.AUTH_USER_MODEL
+        )
 
 def resolve_url(to):
     """
