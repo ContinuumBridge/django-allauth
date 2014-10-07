@@ -181,7 +181,6 @@ class DefaultAccountAdapter(object):
         user_username(user, username)
         user_field(user, 'first_name', first_name or '')
         user_field(user, 'last_name', last_name or '')
-        print "User is", user.__class__
         if 'password1' in data:
             user.set_password(data["password1"])
         else:
