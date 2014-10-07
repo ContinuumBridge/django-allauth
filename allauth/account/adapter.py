@@ -171,7 +171,6 @@ class DefaultAccountAdapter(object):
         signup form.
         """
         from .utils import user_username, user_email, user_field
-        from accounts.models import CBUserManager
 
         data = form.cleaned_data
         first_name = data.get('first_name')
@@ -182,6 +181,7 @@ class DefaultAccountAdapter(object):
         user_username(user, username)
         user_field(user, 'first_name', first_name or '')
         user_field(user, 'last_name', last_name or '')
+        print "User is", user.__class__
         if 'password1' in data:
             user.set_password(data["password1"])
         else:

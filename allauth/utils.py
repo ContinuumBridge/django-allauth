@@ -109,7 +109,21 @@ def import_callable(path_or_callable):
     return ret
 
 try:
-    from django.contrib.auth import get_user_model
+    from django.db.models import get_model
+
+    def get_user_model():
+        """
+        Returns the User model that is active in this project.
+        """
+        try:
+            app_label, model_name = settings.USER_MODEL.split('.')
+        except ValueError:
+            raise ImproperlyConfigured("USER_MODEL must be of the form 'app_label.model_name'")
+        user_model = get_model(app_label, model_name)
+        if user_model is None:
+            raise ImproperlyConfigured("USER_MODEL refers to model '%s' that has not been installed" % settings.AUTH_USER_MODEL)
+        return user_model
+
 except ImportError:
     # Django 1.7
     def get_user_model():
