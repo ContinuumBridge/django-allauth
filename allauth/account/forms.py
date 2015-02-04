@@ -431,8 +431,8 @@ class ResetPasswordForm(forms.Form):
                                        key=temp_key))
             url = '%s://%s%s' % (app_settings.DEFAULT_HTTP_PROTOCOL,
                                  site_address
-                                 #current_site.domain,
                                  path)
+                                 #current_site.domain,
             context = {"site": current_site,
                        "user": user,
                        "password_reset_url": url}
