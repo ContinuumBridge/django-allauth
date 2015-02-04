@@ -422,7 +422,7 @@ class ResetPasswordForm(forms.Form):
             # password_reset = PasswordReset(user=user, temp_key=temp_key)
             # password_reset.save()
 
-            #current_site = Site.objects.get_current()
+            current_site = Site.objects.get_current()
             from django.conf import settings
             site_address = settings.SERVER_ADDRESS
 
