@@ -202,7 +202,7 @@ def build_absolute_uri(request, location, protocol=None):
     '''
     uri = settings.SERVER_ADDRESS + location
     if protocol:
-        uri = protocol + '://' uri
+        uri = protocol + '://' + uri
         #uri = protocol + ':' + uri.partition(':')[2]
     return uri
 
