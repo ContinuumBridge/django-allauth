@@ -197,9 +197,13 @@ def set_form_field_order(form, fields_order):
 
 
 def build_absolute_uri(request, location, protocol=None):
+    '''
     uri = request.build_absolute_uri(location)
+    '''
+    uri = settings.SERVER_ADDRESS + location
     if protocol:
-        uri = protocol + ':' + uri.partition(':')[2]
+        uri = protocol + '://' uri
+        #uri = protocol + ':' + uri.partition(':')[2]
     return uri
 
 
